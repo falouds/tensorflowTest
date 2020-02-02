@@ -23,4 +23,3 @@ model.save("./tensorflow-model/lessonTwo/modal.h5")#保存模型
 model.save_weights("./tensorflow-model/lessonTwo/modal_weight")
 #建立新的模型用load_weights,载入权重
 
-plt.show()
