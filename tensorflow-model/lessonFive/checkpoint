@@ -1,0 +1,2 @@
+model_checkpoint_path: "modal_weight"
+all_model_checkpoint_paths: "modal_weight"
