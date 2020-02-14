@@ -147,53 +147,46 @@ print(data.head())
 
 resourse = data.iloc[:,2:-1]
 label = data.iloc[:,-1]
-
+print(label)
 for indexs in resourse.columns:
     list = []
     print(indexs)
     for i, v in resourse[indexs].items():
         if(v in list):
             resourse.loc[i:i,(indexs)] = list.index(v)
-        elif(v == "-1"):
-            resourse.loc[i:i,(indexs)] = -1
+        elif(isinstance(v,int) or isinstance(v,float)):
+            resourse.loc[i:i,(indexs)] = v
+        elif(v.isdigit()):
+            resourse.loc[i:i,(indexs)] = float(v)
         else:
             list.append(v)
             resourse.loc[i:i,(indexs)] = list.index(v)
-    # with open("./tensorflow-model/tpot/sign.txt",'a', encoding='utf-8') as file:
-    #     if(file.writable()):
-    #         file.write(str(list))
+    with open("./tensorflow-model/tpot/sign.txt",'a', encoding='ANSI') as file:
+        if(file.writable()):
+            file.write(str(list))
 
 resourse["label"] = label
 resourse.to_csv("./tensorflow-model/tpot/change.csv",'w',encoding="utf-8")
 
-train_resourse = resourse[0:10000]
-train_label = label[0:10000]
-test_resourse = resourse[10001:15687]
-test_label = label[10001,15687]
+train_resourse = resourse[0:13000]
+train_label = label[0:13000]
+test_resourse = resourse[13000:15687]
+test_label = label[13000:15687]
 
 
 
 
 model = tf.keras.Sequential()
-model.add(tf.keras.layers.Dense(10,input_shape=(130,),activation='relu'))
-model.add(tf.keras.layers.Dense(256,activation='relu'))#d过大会导致过拟合，太小会丢失特征
-#model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(256,activation='relu'))
-#model.add(tf.keras.layers.Dropout(0.5))
+model.add(tf.keras.layers.Dense(10,input_shape=(78,),activation='relu'))
+model.add(tf.keras.layers.Dense(128,activation='relu'))#d过大会导致过拟合，太小会丢失特征
 model.add(tf.keras.layers.Dense(128,activation='relu'))
-#model.add(tf.keras.layers.Dropout(0.5))
 model.add(tf.keras.layers.Dense(128,activation='relu'))
-#model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(128,activation='relu'))
-#model.add(tf.keras.layers.Dropout(0.5))
-model.add(tf.keras.layers.Dense(128,activation='relu'))
-#model.add(tf.keras.layers.Dropout(0.5))
 model.add(tf.keras.layers.Dense(6,activation='softmax'))#计算映射到概率
 
 check_path="./tensorflow-model/tpot/ch-1.ckpt"
 dir_path = os.path.dirname(check_path)
 callback = tf.keras.callbacks.ModelCheckpoint(check_path,save_weights_only=True,verbose=1,period=10)
-#第一个参数自动保存的路径，第二个是保存权重还是模型，第三个参数表示是否显示提示，第四个指步长
+#第一个参数自动7保存的路径，第二个是保存权重还是模型，第三个参数表示是否显示提示，第四个指步长
 print(model.summary())
 model.compile(
     optimizer='adam',
@@ -203,7 +196,7 @@ model.compile(
 history = model.fit(
     train_resourse,
     train_label,
-    epochs=20,
+    epochs=200,
     callbacks=[callback],
     validation_data=(test_resourse,test_label)
     )
