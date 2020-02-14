@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
   
 print("Tensorflow version: {}".format(tf.version))
-(train_image,train_lable),(test_image,test_lable) = tf.keras.datasets.fashion_mnist.load_data()
+(train_image,train_label),(test_image,test_label) = tf.keras.datasets.fashion_mnist.load_data()
 #网络下载
 print("train_image :" + str(train_image.shape))
 #建立新的模型用load_weights,载入权重
@@ -28,10 +28,10 @@ model.compile(
 #callback = tf.keras.callbacks.ModelCheckpoint(check_path,save_weights_only=True,verbose=1,period=10)
 #第一个参数自动保存的路径，第二个是保存权重还是模型，第三个参数表示是否显示提示，第四个指步长
 
-model.fit(train_image,train_lable,epochs=10)
+model.fit(train_image,train_label,epochs=10)
 
 
 #model.save("./tensorflow-model/lessonThree/modal.h5")#保存模型
 #model.save_weights("./tensorflow-model/lessonThree/modal_weight")
 #建立新的模型用load_weights,载入权重
-model.evaluate(test_image,test_lable)
+model.evaluate(test_image,test_label)

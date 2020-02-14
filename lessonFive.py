@@ -61,3 +61,7 @@ print(model.summary())
 plt.plot(history.epoch,history.history.get('loss'),label='loss')
 plt.plot(history.epoch,history.history.get('val_loss'),label='val_loss')
 plt.show()
+
+plt.plot(history.epoch,history.history.get('acc'),label='acc')
+plt.plot(history.epoch,history.history.get('val_acc'),label='val_acc')
+plt.show()
