@@ -1,9 +1,10 @@
 from sklearn.datasets.california_housing import fetch_california_housing
 from sklearn import tree
 hoseing = fetch_california_housing()
-print(type(hoseing))
-print(hoseing["data"])
+
 print(type(hoseing["data"]))
+print(type(hoseing["target"]))
+
 
 dtr = tree.DecisionTreeRegressor(max_depth=2)
 dtr.fit(hoseing["data"][:,[6,7]],hoseing["target"])
